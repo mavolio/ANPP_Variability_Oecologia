@@ -7,7 +7,7 @@ library(grid)
 
 setwd("C:\\Users\\mavolio2\\Dropbox\\converge_diverge\\datasets\\LongForm")
 
-theme_set(theme_bw(12)) 
+theme_set(theme_bw(10)) 
 
 # read in the data ----------------------------------------------------------------
 
@@ -325,31 +325,29 @@ vot_mean<-ggplot(data=subset(vote.fig, response=="A) Mean ANPP"), aes(y=prop, x=
   coord_flip()+
   xlab("Treatment")+
   ylab("")+
-  scale_fill_manual(name="Treatement\n Response", label=c("Not Sig.", "Increase", "Decrease"), limits=c("not sig", "inc", "dec"), values = c("Gray", "lightblue", "darkblue"))+
+  scale_fill_manual(name="Treatment\n Response", label=c("Not Sig.", "Increase", "Decrease"), limits=c("not sig", "inc", "dec"), values = c("Gray", "lightblue", "darkblue"))+
   scale_x_discrete(limits=c("Other GCD", "Interacting Drivers", "Water", "Nitrogen", "Multiple Nutrients", "All Trts"))+
   geom_vline(xintercept = 5.5)+
-  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+
-  ggtitle("A) Mean ANPP")
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), legend.position = "none")+
+  ggtitle("a) Mean ANPP")
 
 vot_cv<-ggplot(data=subset(vote.fig, response=="B) CV ANPP"), aes(y=prop, x=trt_type8, fill=effect))+
   geom_bar(stat="identity")+
   coord_flip()+
   xlab("Treatment")+
-  ylab("Proportion of Treatments Different from Control")+
-  scale_fill_manual(name="Treatement Response", label=c("Not Sig.", "Increase", "Decrease"), limits=c("not sig", "inc", "dec"), values = c("Gray", "skyblue", "darkblue"))+
+  ylab("Prop. of Trts Diff. from Control")+
+  scale_fill_manual(name="Treatment Response", label=c("Not Sig.", "Increase", "Decrease"), limits=c("not sig", "inc", "dec"), values = c("Gray", "skyblue", "darkblue"))+
   scale_x_discrete(limits=c("Other GCD", "Interacting Drivers", "Water", "Nitrogen", "Multiple Nutrients", "All Trts"))+
   geom_vline(xintercept = 5.5)+
-  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+
-  ggtitle("B) CV ANPP")
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), legend.position = "none")+
+  ggtitle("b) CV ANPP")
 
-legend=gtable_filter(ggplot_gtable(ggplot_build(vot_mean)), "guide-box") 
+#draw this and then remove legend position above.
+legend=gtable_filter(ggplot_gtable(ggplot_build(vot_cv)), "guide-box") 
 grid.draw(legend)
 
 fig1a<-
-  grid.arrange(arrangeGrob(vot_mean+theme(legend.position="none"),
-                           vot_cv+theme(legend.position="none"),
-                           ncol=1), legend, 
-               widths=unit.c(unit(1, "npc") - legend$width, legend$width),nrow=1)
+  grid.arrange(vot_mean, legend, vot_cv, ncol=1, heights=c(1,0.5,1))
 
 
 
@@ -394,7 +392,7 @@ cv_fig<-ggplot(data=PD_bargraph, aes(x=trt_type8, y=cv, fill=trt_type8))+
   scale_fill_manual(values=c("darkred","orange","green3","blue", "black"))+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), legend.position = "none")+
   geom_vline(xintercept = 1.5, size = 1)+
-  ggtitle("D) CV ANPP")
+  ggtitle("d) CV ANPP")
 
 ##this is figure S2
 sd_fig<-ggplot(data=PD_bargraph, aes(x=trt_type8, y=sd, fill=trt_type8))+
@@ -428,7 +426,7 @@ mn_fig<-ggplot(data=PD_bargraph, aes(x=trt_type8, y=mn, fill=trt_type8))+
   geom_text(x=4, y=48, label="*", size=8)+
   geom_text(x=5, y=35, label="*", size=8)+
   scale_y_continuous(limits=c(0, 60))+
-  ggtitle("C) Mean ANPP")
+  ggtitle("c) Mean ANPP")
 
 
 fig1b<-
@@ -436,7 +434,9 @@ fig1b<-
                            cv_fig+theme(legend.position="none"),
                            ncol=1))
 
-grid.arrange(fig1a,fig1b, ncol=2)
+figure1<-grid.arrange(fig1a,fig1b, ncol=2)
+
+ggsave("C:\\Users\\mavolio2\\Dropbox\\Manuscripts\\Corre - ANPP\\Submit oecologia\\Revision\\Figure1.jpeg", figure1, dpi=800, units="mm", width=84*2, height=84*2)
 
 # Analysis 2 abiotic and biotic drivers of PD ANPP and CV of ANPP --------------------
 
@@ -501,12 +501,12 @@ srgraph<-
 ggplot(data=subset(tograph_cor2, vari_metric=="PD_CV"&parm_group=="rrich" ), aes(x = value, y = vari_value))+
   geom_point(aes(color=as.factor(sig)))+
   scale_color_manual(name="", values=c("darkgray", 'blue'))+
-  xlab("Rarefied Species Richness")+
+  xlab("Sp. Richness")+
   ylab("Percent Difference in Temporal Variability")+
   annotate("text", x=Inf, y = Inf, hjust=1.05, vjust=1.5, label="-0.151")+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), legend.position = "none")+
   geom_hline(yintercept = 0, linetype="dashed", color="black")+
-  ggtitle("A) Sp Richness")
+  ggtitle("a) Sp. Richness")
 
 evengraph<-
   ggplot(data=subset(tograph_cor2, vari_metric=="PD_CV"&parm_group=="Evar" ), aes(x = value, y = vari_value))+
@@ -518,33 +518,35 @@ evengraph<-
   annotate("text", x=Inf, y = Inf, hjust=1.05, vjust=1.5, label="0.259")+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), legend.position = "none")+
   geom_hline(yintercept = 0, linetype="dashed", color="black")+
-  ggtitle("B) Evenness")
+  ggtitle("b) Evenness")
 
 MAPgraph<-
   ggplot(data=subset(tograph_cor2, vari_metric=="PD_CV"&parm_group=="MAP" ), aes(x = value, y = vari_value))+
   geom_point(aes(color=as.factor(sig)))+
   scale_color_manual(name="", values=c("darkgray", 'blue'))+
-  xlab("Mean Annual Precipitation (mm)")+
+  xlab("Annual Precip.")+
   ylab("")+
   geom_smooth(method="lm", se=F, color = "black")+
   annotate("text", x=Inf, y = Inf, hjust=1.05, vjust=1.5, label="-0.497")+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), legend.position = "none")+
   geom_hline(yintercept = 0, linetype="dashed", color="black")+
-  ggtitle("C) MAP")
+  ggtitle("c) MAP")
 
 MATgraph<-
   ggplot(data=subset(tograph_cor2, vari_metric=="PD_CV"&parm_group=="MAT" ), aes(x = value, y = vari_value))+
   geom_point(aes(color=as.factor(sig)))+
   scale_color_manual(name="", values=c("darkgray", 'blue'))+
-  xlab("Mean Annual Temperature (\u00B0C)")+
+  xlab("Annual Temp.")+
   ylab("")+
   geom_smooth(method="lm", se=F, color = "black")+
   annotate("text", x=Inf, y = Inf, hjust=1.05, vjust=1.5, label="-0.612")+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), legend.position = "none")+
   geom_hline(yintercept = 0, linetype="dashed", color="black")+
-  ggtitle("D) MAT")
+  ggtitle("d) MAT")
 
-grid.arrange(srgraph, evengraph, MAPgraph, MATgraph, ncol=4)
+figure2<-grid.arrange(srgraph, evengraph, MAPgraph, MATgraph, ncol=4)
+
+ggsave("C:\\Users\\mavolio2\\Dropbox\\Manuscripts\\Corre - ANPP\\Submit oecologia\\Revision\\Figure2.jpeg", figure2, dpi=800, units="mm", width=84*2, height=84)
 
 
 # Analysis 3, sensitivity of anpp to precip --------------------------------------------------
@@ -640,7 +642,7 @@ slopes_bar_overall<-slopes_tograph%>%
 slopes_bar<-rbind(slopes_bar_overall, slopes_bar_trt)
 
 
-ggplot(data=slopes_bar, aes(x=trt_type8, y=mdiff, fill=trt_type8))+
+figure3<-ggplot(data=slopes_bar, aes(x=trt_type8, y=mdiff, fill=trt_type8))+
   geom_bar(position=position_dodge(), stat="identity")+
   geom_errorbar(aes(ymin=mdiff-sediff, ymax=mdiff+sediff),position= position_dodge(0.9), width=0.2)+
   xlab("")+
@@ -654,7 +656,7 @@ ggplot(data=slopes_bar, aes(x=trt_type8, y=mdiff, fill=trt_type8))+
   geom_text(x=2, y=0.24, label="*", size=8)
 
 
-
+ggsave("C:\\Users\\mavolio2\\Dropbox\\Manuscripts\\Corre - ANPP\\Submit oecologia\\Revision\\Figure3.jpeg", figure3, dpi=800, units="mm", width=84, height=85)
 
 # appendix Figure S1 analysis PD anpp over time ---------------------------------------------------------
 fig<-PD_anpp_yr%>%
