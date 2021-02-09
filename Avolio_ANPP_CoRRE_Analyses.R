@@ -389,7 +389,7 @@ cv_fig<-ggplot(data=PD_bargraph, aes(x=trt_type8, y=cv, fill=trt_type8))+
   ylab("Difference (%) CV ANPP")+
   scale_x_discrete(limits = c("All Treatments",'Multiple Nutrients','Nitrogen','Water', "Interacting Drivers"),labels = c("All Trts", "Multiple\n Nutrients", "Nitrogen","Water", "Interacting"))+
   xlab("")+
-  scale_fill_manual(values=c("darkred","orange","green3","blue", "black"))+
+  scale_fill_manual(values=c("black","darkred","orange","green3", "blue"))+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), legend.position = "none")+
   geom_vline(xintercept = 1.5, size = 1)+
   ggtitle("d) CV ANPP")
@@ -402,7 +402,7 @@ sd_fig<-ggplot(data=PD_bargraph, aes(x=trt_type8, y=sd, fill=trt_type8))+
   ylab("Percent Difference\nSD of ANPP")+
   scale_x_discrete(limits = c("All Treatments",'Multiple Nutrients','Nitrogen','Water', "Interacting Drivers"),labels = c("All Trts", "Multiple\n Nutrients", "Nitrogen","Water", "Interacting"))+
   xlab("")+
-  scale_fill_manual(values=c("darkred","orange","green3","blue", "black"))+
+  scale_fill_manual(values=c("black","darkred","orange","green3", "blue"))+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), legend.position = "none")+
   geom_vline(xintercept = 1.5, size = 1)+
   geom_text(x=1, y=35, label="*", size=8)+
@@ -417,7 +417,7 @@ mn_fig<-ggplot(data=PD_bargraph, aes(x=trt_type8, y=mn, fill=trt_type8))+
   ylab("Difference (%) Mean ANPP")+
   scale_x_discrete(limits = c("All Treatments",'Multiple Nutrients','Nitrogen','Water', "Interacting Drivers"),labels = c("All Trts", "Multiple\n Nutrients", "Nitrogen","Water", "Interacting"))+
   xlab("")+
-  scale_fill_manual(values=c("darkred","orange","green3","blue", "black"))+
+  scale_fill_manual(values=c("black","darkred","orange","green3", "blue"))+
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), legend.position = "none")+
   geom_vline(xintercept = 1.5, size = 1)+
   geom_text(x=1, y=35, label="*", size=8)+
